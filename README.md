@@ -8,3 +8,8 @@ the above SDKs.
 
 Chocolatey is also installed.
 
+Try it out with:
+```
+docker run -ti symbols/vs2008-vs2010 powershell
+```
+

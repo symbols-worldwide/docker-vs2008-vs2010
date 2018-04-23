@@ -1,0 +1,14 @@
+  - command: |
+      docker login -u=%DOCKERHUB_USERNAME% -p=%DOCKERHUB_PASSWORD%
+      docker build --pull --rm -t symbols/vs2008-vs2010:%BUILDKITE_BRANCH% .
+      if %errorlevel%==0 (
+        docker push symbols/vs2008-vs2010:%BUILDKITE_BRANCH%
+        if %BUILDKITE_BRANCH%==master (
+          docker tag symbols/vs2008-vs2010:%BUILDKITE_BRANCH% symbols/vs2008-vs2010:latest
+          docker push symbols/vs2008-vs2010:latest
+        )
+      )
+      for /f %%v in ('docker images -q --filter "dangling=true"') do docker rmi %%v
+    label: docker build
+    agents:
+      windows: true
